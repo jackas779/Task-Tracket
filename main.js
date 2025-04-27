@@ -59,7 +59,7 @@ try {
 const commands = {
   add: createTask,
   update: updateTask,
-  delete: '',
+  delete: deleteTask,
   exit
 }
 
@@ -109,6 +109,11 @@ function updateTask (argument) {
   const { id, newTask } = argument
   let idTask
 
+  if (idTask === '') {
+    console.log('El identificador no puede estar vacio')
+    return
+  }
+
   try {
     idTask = parseInt(id)
   } catch (e) {
@@ -116,10 +121,6 @@ function updateTask (argument) {
     return
   }
 
-  if (idTask === '') {
-    console.log('El identificador no puede estar vacio')
-    return
-  }
   if (newTask === '') {
     console.log('La nueva tarea no puede estar vacia')
     return
@@ -145,7 +146,38 @@ function updateTask (argument) {
     fs.writeFileSync(pathArchive, JSON.stringify(tasks), 'utf-8')
     console.log('tarea actualizada correctamente ')
   } catch (error) {
-    console.log(`error al actualizar la tarea ${TASK_FILE}`)
+    console.log(`error al actualizar la tarea (ID: ${idTask})`)
+  }
+}
+
+function deleteTask (argument) {
+  const { id } = argument
+
+  if (id.trim() === '') {
+    console.log('El identificador de la tarea no puede estar vacio')
+    return
+  }
+
+  let idTask
+  try {
+    idTask = parseInt(id)
+  } catch (error) {
+    console.log('El identificador tiene que ser un numero')
+  }
+
+  const taskFind = tasks.find(e => e.id === idTask)
+  if (!taskFind) {
+    console.log('Identificador no encontrado')
+    return
+  }
+
+  const newTasks = tasks.filter(task => task.id !== taskFind.id)
+
+  try {
+    fs.writeFileSync(pathArchive, JSON.stringify(newTasks), 'utf-8')
+    console.log('tarea se elimino correctamente ')
+  } catch (error) {
+    console.log(`error al eliminar la tarea  ( ID: ${idTask} )`)
   }
 }
 
@@ -164,7 +196,8 @@ if (typeof commandAction === 'function') {
     case 'update':
       objetTask = { id: argument, newTask: argument2 }
       break
-    case '3' :
+    case 'delete' :
+      objetTask = { id: argument }
       break
     case '4':
       break
@@ -173,5 +206,3 @@ if (typeof commandAction === 'function') {
 } else {
   console.log('comando no valido para mas informacion escriba help')
 }
-
-// console.log(process.argv);
