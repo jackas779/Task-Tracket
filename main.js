@@ -60,12 +60,8 @@ const commands = {
   add: createTask,
   update: updateTask,
   delete: deleteTask,
-  exit
-}
-
-function exit () {
-  console.log('hasta luego...')
-  process.exit(0)
+  'mark-done': doneTask,
+  'mark-in-progress': markInProgressTask
 }
 
 function createTask (argument) {
@@ -181,6 +177,70 @@ function deleteTask (argument) {
   }
 }
 
+function doneTask (argument) {
+  const { id } = argument
+  let idTask
+
+  if (id.trim() === '') {
+    console.log('El identificador de la tarea no puede estar vacio')
+    return
+  }
+
+  try {
+    idTask = parseInt(id)
+  } catch (error) {
+    console.log('El identificador tiene que ser un numero')
+  }
+
+  const taskFind = tasks.find(task => task.id === idTask)
+  if (!taskFind) {
+    console.log('No se encontro la tarea')
+    return
+  }
+
+  taskFind.status = 3
+  taskFind.dateUpdate = date
+
+  try {
+    fs.writeFileSync(pathArchive, JSON.stringify(tasks), 'utf-8')
+    console.log('La tarea se marco como completa')
+  } catch (error) {
+    console.log(`error al actualizar el estado de la tarea ( ID: ${idTask} )`)
+  }
+}
+
+function markInProgressTask (argument) {
+  const { id } = argument
+  let idTask
+
+  if (id.trim() === '') {
+    console.log('El identificador de la tarea no puede estar vacio')
+    return
+  }
+
+  try {
+    idTask = parseInt(id)
+  } catch (error) {
+    console.log('El identificador tiene que ser un numero')
+  }
+
+  const taskFind = tasks.find(task => task.id === idTask)
+  if (!taskFind) {
+    console.log('No se encontro la tarea')
+    return
+  }
+
+  taskFind.status = 2
+  taskFind.dateUpdate = date
+
+  try {
+    fs.writeFileSync(pathArchive, JSON.stringify(tasks), 'utf-8')
+    console.log('La tarea se marco como en progreso')
+  } catch (error) {
+    console.log(`error al actualizar el estado de la tarea ( ID: ${idTask} )`)
+  }
+}
+
 const command = process.argv[2] ?? ''
 const argument = process.argv[3] ?? ''
 const argument2 = process.argv[4] ?? ''
@@ -199,7 +259,11 @@ if (typeof commandAction === 'function') {
     case 'delete' :
       objetTask = { id: argument }
       break
-    case '4':
+    case 'mark-done':
+      objetTask = { id: argument }
+      break
+    case 'mark-in-progress':
+      objetTask = { id: argument }
       break
   }
   commandAction(objetTask)
