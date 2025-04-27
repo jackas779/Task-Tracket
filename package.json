@@ -17,5 +17,14 @@
   "bugs": {
     "url": "https://github.com/jackas779/Task-Tracket/issues"
   },
-  "homepage": "https://github.com/jackas779/Task-Tracket#readme"
+  "homepage": "https://github.com/jackas779/Task-Tracket#readme",
+  "devDependencies": {
+    "standard": "^17.1.2"
+  },
+  "bin": {
+    "task-cli": "./main.js"
+  },
+  "eslintConfig": {
+    "extends": "standard"
+  }
 }

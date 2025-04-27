@@ -1,20 +1,42 @@
-import readline from 'readline'
+#!/usr/bin/env node
+
 import fs from 'fs'
-import util from 'util'
 
-const TASK_FILE = 'tasks,json'
+// 1. Obtener el objeto Date para el momento actual
+const fechaActual = new Date();
+
+// 2. Definir los nombres de los meses en español (0-indexados)
+const nombresMeses = [
+  "enero", "febrero", "marzo", "abril", "mayo", "junio",
+  "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+];
+
+// 3. Extraer los componentes de la fecha y hora (usando métodos locales)
+const dia = fechaActual.getDate(); // Día del mes (1-31)
+const mesNumero = fechaActual.getMonth(); // Número del mes (0-11)
+const anio = fechaActual.getFullYear(); // Año completo
+const horas = fechaActual.getHours(); // Horas (0-23)
+const minutos = fechaActual.getMinutes(); // Minutos (0-59)
+const segundos = fechaActual.getSeconds(); // Segundos (0-59)
+
+// 4. Obtener el nombre del mes usando el número
+const nombreMes = nombresMeses[mesNumero];
+
+// 5. Formatear horas, minutos y segundos para que tengan dos dígitos (con cero inicial si < 10)
+// Usamos padStart(2, '0') para asegurar dos dígitos, rellenando con '0' si es necesario.
+const horasFormateadas = String(horas).padStart(2, '0');
+const minutosFormateados = String(minutos).padStart(2, '0');
+const segundosFormateados = String(segundos).padStart(2, '0');
+
+const date = `${dia} de ${nombreMes} de ${anio} a las ${horasFormateadas}:${minutosFormateados}:${segundosFormateados}`;
 
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-  prompt: '>'
-})
+const TASK_FILE = 'tasks.json'
 
 const tasks = []
 
 const commands = {
-  create: createTask,
+  add: createTask,
   update: '',
   delete: '',
   exit: exit
@@ -22,53 +44,23 @@ const commands = {
 
 function exit() {
   console.log('hasta luego...')
-  rl.close()
+  process.exit(0)
 }
 
-const menu =
-  'Bienvenido al administrador de tareas que quiere hacer  \n' +
-  '1.Crear tarea \n' +
-  '2.Actualizar tarea \n' +
-  '3.eliminar tarea \n'
+function createTask(task) {
 
 
-async function createTask() {
-
-  const question = util.promisify(rl.question).bind(rl);
-
-  const task = await question('Ingrese el nombre de la nueva tarea: \n');
   const nameTask = task.trim().toLowerCase()
 
   if (nameTask.trim() === '') {
     console.log("La tarea no puede estar vacia");
-    rl.prompt()
     return
-  }
-  const taskExist = tasks.find(e => e.name === nameTask)
-  if (taskExist) {
-    console.log('la tarea ya existe');
-    rl.prompt()
-    return
-  }
-
-  let taskDescription;
-  const option = await question('Desea agregar descripcion ? (si/no) \n');
-  const inputOption = option.trim().toLowerCase();
-
-  if (inputOption !== 'si') {
-    taskDescription = ''
-  } else {
-    rl.question('escriba su descripcion \n',
-      (input) => {
-        taskDescription = input
-      }
-    )
   }
   tasks.push({
     name: nameTask,
-    date: `${new Date().getDate()}/${new Date().getMonth() + 1}/${new Date().getFullYear()}`,
+    // date: `${new Date().getDate()}/${new Date().getMonth() + 1}/${new Date().getFullYear()}`,
+    date: date,
     status: 'no iniciado',
-    description: taskDescription
   })
 
   const taskCreated = tasks.find(e => e.name === nameTask)
@@ -77,47 +69,22 @@ async function createTask() {
   }
   console.log("la tarea fue creada correctemente");
 
-  rl.prompt()
+  console.log(tasks);
+
 
 }
 
 
-rl.on('line', (input) => {
+const command = process.argv[2]
+const argument = process.argv[3]
 
-  const commandInput = input.trim().toLowerCase()
-  const commandAction = commands[commandInput]
-  if (typeof commandAction === 'function') {
-    commandAction()
-  } else {
-    console.log('comando no valido para mas informacion escriba help');
-  }
-})
+const commandInput = command.trim().toLowerCase()
+const commandAction = commands[commandInput]
+if (typeof commandAction === 'function') {
+  commandAction(argument)
+} else {
+  console.log('comando no valido para mas informacion escriba help');
+}
 
-rl.prompt()
 
-// function main() {
-//   rl.question(
-//     menu,
-//     (aswer) => {
-//       switch (aswer) {
-//         case '1':
-//           rl.question('Ingrese el nombre de la nueva tarea: \n',
-//             (task) => {
-//               createTask(task)
-//               main()
-//             }
-//           )
-//           break
-//         case '2':
-//           rl.close()
-//           break
-//         default:
-//           console.log('que es esto ?')
-//           main()
-//           break
-//       }
-//     }
-//   )
-// }
-
-// main()
+// console.log(process.argv);
