@@ -1,0 +1,21 @@
+{
+  "name": "task-tracket",
+  "version": "1.0.0",
+  "description": "proyect backend from road map",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jackas779/Task-Tracket.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jackas779/Task-Tracket/issues"
+  },
+  "homepage": "https://github.com/jackas779/Task-Tracket#readme"
+}
