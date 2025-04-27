@@ -60,6 +60,7 @@ const commands = {
   add: createTask,
   update: updateTask,
   delete: deleteTask,
+  list: listTask,
   'mark-done': doneTask,
   'mark-in-progress': markInProgressTask
 }
@@ -209,6 +210,33 @@ function doneTask (argument) {
   }
 }
 
+function listTask (argument) {
+  const { option } = argument
+  const method = option.toLowerCase()
+  if (method === 'done') {
+    const taskFilter = tasks.filter(task => task.status === 3)
+    taskFilter.forEach(task => {
+      console.log(`ID : ${task.id} -> Nombre: ${task.name}`)
+    })
+  } else if (method === 'todo') {
+    const taskFilter = tasks.filter(task => task.status === 0)
+    taskFilter.forEach(task => {
+      console.log(`ID : ${task.id} -> Nombre: ${task.name}`)
+    })
+  } else if (method === 'in-progress') {
+    const taskFilter = tasks.filter(task => task.status === 2)
+    taskFilter.forEach(task => {
+      console.log(`ID : ${task.id} -> Nombre: ${task.name}`)
+    })
+  } else if (method === '') {
+    tasks.forEach(task => {
+      console.log(`ID : ${task.id} -> Nombre: ${task.name}`)
+    })
+  } else {
+    console.log('Comando no reconocido')
+  }
+}
+
 function markInProgressTask (argument) {
   const { id } = argument
   let idTask
@@ -265,6 +293,8 @@ if (typeof commandAction === 'function') {
     case 'mark-in-progress':
       objetTask = { id: argument }
       break
+    case 'list':
+      objetTask = { option: argument }
   }
   commandAction(objetTask)
 } else {
