@@ -3,6 +3,8 @@
 import { createDirname } from './utils/path.js'
 import fs from 'fs'
 import path from 'path'
+import { date } from './utils/date.js'
+import TaskController from './models/task.controller.js'
 
 const { __dirname } = createDirname(import.meta.url)
 const TASK_FILE = 'tasks.json'
@@ -16,34 +18,6 @@ if (!fs.existsSync(pathArchive)) {
     console.log(`error al crear el archivo ${TASK_FILE}`)
   }
 }
-
-// 1. Obtener el objeto Date para el momento actual
-const fechaActual = new Date()
-
-// 2. Definir los nombres de los meses en español (0-indexados)
-const nombresMeses = [
-  'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
-  'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
-]
-
-// 3. Extraer los componentes de la fecha y hora (usando métodos locales)
-const dia = fechaActual.getDate() // Día del mes (1-31)
-const mesNumero = fechaActual.getMonth() // Número del mes (0-11)
-const anio = fechaActual.getFullYear() // Año completo
-const horas = fechaActual.getHours() // Horas (0-23)
-const minutos = fechaActual.getMinutes() // Minutos (0-59)
-const segundos = fechaActual.getSeconds() // Segundos (0-59)
-
-// 4. Obtener el nombre del mes usando el número
-const nombreMes = nombresMeses[mesNumero]
-
-// 5. Formatear horas, minutos y segundos para que tengan dos dígitos (con cero inicial si < 10)
-// Usamos padStart(2, '0') para asegurar dos dígitos, rellenando con '0' si es necesario.
-const horasFormateadas = String(horas).padStart(2, '0')
-const minutosFormateados = String(minutos).padStart(2, '0')
-const segundosFormateados = String(segundos).padStart(2, '0')
-
-const date = `${dia} de ${nombreMes} de ${anio} a las ${horasFormateadas}:${minutosFormateados}:${segundosFormateados}`
 
 let tasks = []
 
@@ -273,30 +247,31 @@ const command = process.argv[2] ?? ''
 const argument = process.argv[3] ?? ''
 const argument2 = process.argv[4] ?? ''
 
-const commandInput = command.trim().toLowerCase()
-const commandAction = commands[commandInput]
-if (typeof commandAction === 'function') {
-  let objetTask
-  switch (commandInput) {
-    case 'add' :
-      objetTask = { task: argument }
-      break
-    case 'update':
-      objetTask = { id: argument, newTask: argument2 }
-      break
-    case 'delete' :
-      objetTask = { id: argument }
-      break
-    case 'mark-done':
-      objetTask = { id: argument }
-      break
-    case 'mark-in-progress':
-      objetTask = { id: argument }
-      break
-    case 'list':
-      objetTask = { option: argument }
-  }
-  commandAction(objetTask)
-} else {
-  console.log('comando no valido para mas informacion escriba help')
-}
+const task = new TaskController(command, { argument, argument2 })
+task.run()
+// const commandAction = commands[commandInput]
+// if (typeof commandAction === 'function') {
+//   let objetTask
+//   switch (commandInput) {
+//     case 'add' :
+//       objetTask = { task: argument }
+//       break
+//     case 'update':
+//       objetTask = { id: argument, newTask: argument2 }
+//       break
+//     case 'delete' :
+//       objetTask = { id: argument }
+//       break
+//     case 'mark-done':
+//       objetTask = { id: argument }
+//       break
+//     case 'mark-in-progress':
+//       objetTask = { id: argument }
+//       break
+//     case 'list':
+//       objetTask = { option: argument }
+//   }
+//   commandAction(objetTask)
+// } else {
+//   console.log('comando no valido para mas informacion escriba help')
+// }
