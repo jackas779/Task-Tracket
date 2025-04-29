@@ -6,6 +6,8 @@ Task Tracker CLI es una sencilla aplicación de línea de comandos construida co
 
 Este proyecto se enfoca en practicar habilidades de programación esenciales como el manejo del sistema de archivos, la entrada de usuario a través de argumentos posicionales y la construcción de una CLI básica, utilizando **exclusivamente módulos nativos de Node.js** para su funcionalidad principal.
 
+Proyecto realizo con los requisitos propuestos de la pagina de roadmap para mas detalles de los requisitos ir a la siguiente url  [Roadmap](https://roadmap.sh/projects/task-tracker)
+
 ## Características
 
 * **Gestión de Tareas:**
