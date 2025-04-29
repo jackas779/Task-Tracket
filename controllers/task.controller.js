@@ -52,7 +52,7 @@ export default class TaskController {
           if (task.status === 3) {
             status = 'Finalizada'
           }
-          console.log(`ID : ${task.id} -> Nombre: ${task.name} -> Estado: ${status}(${task.status}) ||| Fecha creacion: ${task.dateCreate} --- Fecha Ultima Actualizacion: ${task.dateUpdate}`)
+          console.log(`| ID : ${task.id} -> Nombre: ${task.name} -> Estado: ${status}(${task.status}) \n| Fecha creacion: ${task.dateCreate} --- Fecha Ultima Actualizacion: ${task.dateUpdate}`)
         })
         break
       }
