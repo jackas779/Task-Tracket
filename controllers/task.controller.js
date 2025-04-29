@@ -76,6 +76,11 @@ export default class TaskController {
         console.log(updateTask)
         break
       }
+      case 'help': {
+        const messageHelp = this.taskModel.help()
+        console.log(messageHelp)
+        break
+      }
       default:
         console.log('comando no valido')
         break

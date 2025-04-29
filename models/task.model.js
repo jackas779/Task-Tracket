@@ -199,4 +199,22 @@ export default class TaskModel {
 
     return mensajeFinal
   }
+
+  static help () {
+    const helpMessage = `Uso: task-cli <comando> [argumentos]
+
+      Comandos disponibles:
+
+      add "<Tarea>"            # Agrega una nueva tarea, debe ir entre comillas si contiene espacios.
+      update <ID> "<nueva tarea>" # Actualiza tarea de una tarea por su ID. La nueva tarea debe ir entre comillas.
+      delete <ID>                  # Elimina una tarea por su ID.
+      mark-in-progress <ID>        # Marca una tarea como 'en progreso' por su ID.
+      mark-done <ID>               # Marca una tarea como 'completada' por su ID.
+      list [estado]                # Lista tareas. Estados opcionales para filtrar: todo, in-progress, done. Si no se especifica estado, lista todas.
+      help                         # Muestra este mensaje de ayuda.
+      exit                         # Sale de la aplicación Task Tracker CLI.
+    `
+
+    return helpMessage
+  }
 }
