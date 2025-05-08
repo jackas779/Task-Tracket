@@ -36,10 +36,9 @@ Sigue estos pasos para instalar Task Tracker CLI globalmente en tu sistema y pod
 
 1.  **Clonar el Repositorio:**
     ```bash
-    git clone [URL_DE_TU_REPOSITORIO]
-    cd [nombre-de-tu-directorio-de-proyecto]
+    git clone https://github.com/jackas779/Task-Tracket.git
+    cd Task-Tracket
     ```
-    (Reemplaza `[URL_DE_TU_REPOSITORIO]` y `[nombre-de-tu-directorio-de-proyecto]` con los datos de tu proyecto).
 
 2.  **Instalar Globalmente:**
     Desde el directorio raíz del proyecto clonado, ejecuta el siguiente comando para instalar la CLI globalmente usando npm:
